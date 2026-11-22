@@ -1,0 +1,65 @@
+generator client {
+  provider = "prisma-client"
+  output = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas = ["directory"]
+}
+
+model Firm {
+  id Int @id @default(autoincrement())
+  name String @unique
+  profiles ProviderProfile[]
+  @@schema("directory")
+}
+
+model ProviderProfile {
+  slug String @id
+  name String
+  title String
+  bio String
+  location String?
+  email String?
+  phone String?
+  published Boolean @default(false)
+  isPremium Boolean @default(false)
+  isAvailable Boolean @default(true)
+  rating Float @default(0)
+  reviewCount Int @default(0)
+  firmId Int
+  firm Firm @relation(fields: [firmId], references: [id])
+  services Service[]
+  specialties ProfileSpecialty[]
+  @@schema("directory")
+}
+
+model Specialty {
+  slug String @id
+  name String
+  profiles ProfileSpecialty[]
+  @@schema("directory")
+}
+
+model ProfileSpecialty {
+  profileSlug String
+  specialtySlug String
+  position Int
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Cascade)
+  specialty Specialty @relation(fields: [specialtySlug], references: [slug])
+  @@id([profileSlug, specialtySlug])
+  @@index([specialtySlug])
+  @@schema("directory")
+}
+
+model Service {
+  id String @id
+  name String
+  description String
+  position Int
+  profileSlug String
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Cascade)
+  @@index([profileSlug])
+  @@schema("directory")
+}
