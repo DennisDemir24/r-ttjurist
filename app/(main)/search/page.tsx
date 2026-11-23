@@ -52,7 +52,7 @@ export default async function SearchPage({ searchParams }: SearchPageProps) {
   const categorySlug = firstValue(params.category);
   const category = categorySlug ? getCategoryBySlug(categorySlug) : undefined;
 
-  const results = searchProfiles({ query, categorySlug: category?.slug });
+  const results = await searchProfiles({ query, categorySlug: category?.slug });
 
   const heading = category
     ? `Jurister inom ${category.name}`

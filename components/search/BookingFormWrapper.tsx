@@ -2,48 +2,16 @@
 
 import { useState } from "react";
 import type { LawyerProfile } from "@/lib/types";
-import BookingForm, { type BookingFormData } from "./BookingForm";
+import BookingForm from "./BookingForm";
+import ResultCard from "./ResultCard";
+import { bookingButton } from "../form-styles";
 
-/**
- * BookingFormWrapper - A client component that manages the booking modal state.
- * 
- * This wrapper handles client-side state (useState) which cannot be used in Server Components,
- * and provides a clean API for opening/closing the booking modal from parent components.
- */
-export default function BookingFormWrapper({ profile }: { profile: LawyerProfile }) {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const handleConfirm = async (bookingData: BookingFormData) => {
-    console.log("Booking confirmed:", bookingData);
-    
-    // Here you would call the backend API:
-    // await fetch('/api/v1/bookings', { method: 'POST', body: JSON.stringify(bookingData) });
-    
-    // The modal stays open: BookingConfirmation's "Stäng" button / auto-close
-    // calls onClose, which closes it after the user has seen the confirmation.
-  };
-
-  const openBooking = () => setIsModalOpen(true);
-
-  return (
-    <div>
-      {/* CTA button */}
-      <button
-        onClick={openBooking}
-        className="mt-4 w-full rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition-colors hover:bg-blue-700"
-      >
-        Boka konsultation
-      </button>
-
-      {/* Booking modal - only renders when isModalOpen is true */}
-      {isModalOpen && (
-        <BookingForm
-          isOpen={isModalOpen}
-          onClose={() => setIsModalOpen(false)}
-          providerName={profile.name}
-          onSubmit={handleConfirm}
-        />
-      )}
-    </div>
-  );
+export default function BookingFormWrapper({ profile, asCard = false }: { profile: LawyerProfile; asCard?: boolean }) {
+  const [open, setOpen] = useState(false);
+  const show = () => setOpen(true);
+  return <>
+    {asCard ? <ResultCard profile={profile} onBook={show} /> :
+      <button className={`${bookingButton} mt-4 w-full`} onClick={show}>Boka konsultation</button>}
+    {open && <BookingForm slug={profile.slug} name={profile.name} firmName={profile.firmName} onClose={() => setOpen(false)} />}
+  </>;
 }

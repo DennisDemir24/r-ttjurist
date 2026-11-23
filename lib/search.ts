@@ -1,5 +1,5 @@
 import type { LawyerProfile } from "@/lib/types";
-import { getAllProfiles } from "@/lib/data/profiles";
+import { getAllProfiles } from "@/lib/data/directory";
 import { getCategoryBySlug, type LegalCategory } from "@/lib/data/categories";
 
 /**
@@ -27,14 +27,14 @@ export interface SearchCriteria {
  * so the highest-rated lawyer for a case type always comes out on top.
  * (Phase 3 will insert premium/boosted ordering here once paid ranking lands.)
  */
-export function searchProfiles({ query, categorySlug }: SearchCriteria): LawyerProfile[] {
+export async function searchProfiles({ query, categorySlug }: SearchCriteria): Promise<LawyerProfile[]> {
   const normalizedQuery = normalize(query ?? "").trim();
   const queryWords = normalizedQuery ? normalizedQuery.split(/\s+/).filter(Boolean) : [];
   const category: LegalCategory | undefined = categorySlug
     ? getCategoryBySlug(categorySlug)
     : undefined;
 
-  return getAllProfiles()
+  return (await getAllProfiles())
     .filter((profile) => matchesCategory(profile, category))
     .filter((profile) => (queryWords.length > 0 ? matchesQuery(profile, queryWords) : true))
     .sort(rankProfiles);

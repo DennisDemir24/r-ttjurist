@@ -4,13 +4,13 @@ import { notFound } from "next/navigation";
 import ProfileHeader from "@/components/profile/ProfileHeader";
 import ServiceList from "@/components/profile/ServiceList";
 import BookingFormWrapper from "@/components/search/BookingFormWrapper";
-import { getProfileBySlug } from "@/lib/data/profiles";
+import { getProfileBySlug } from "@/lib/data/directory";
 
 type ProfilePageProps = PageProps<"/profile/[id]">;
 
 export async function generateMetadata({ params }: ProfilePageProps): Promise<Metadata> {
   const { id } = await params;
-  const profile = getProfileBySlug(id);
+  const profile = await getProfileBySlug(id);
 
   if (!profile) {
     return { title: "Jurist ej hittad – RättJurist" };
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: ProfilePageProps): Promise<Me
 // next.config.ts and wrap the content in <Suspense> with a skeleton.
 export default async function ProfilePage({ params }: ProfilePageProps) {
   const { id } = await params;
-  const profile = getProfileBySlug(id);
+  const profile = await getProfileBySlug(id);
 
   if (!profile) {
     notFound();

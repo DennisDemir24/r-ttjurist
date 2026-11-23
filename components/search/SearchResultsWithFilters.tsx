@@ -15,7 +15,7 @@
 
 import { useMemo, useState } from "react";
 import FilterSidebar from "./FilterSidebar";
-import ResultCardWithBooking from "./ResultCardWithBooking";
+import BookingFormWrapper from "./BookingFormWrapper";
 import {
   DEFAULT_FILTERS,
   profileMatchesFilters,
@@ -71,7 +71,7 @@ export default function SearchResultsWithFilters({
         {results.length > 0 ? (
           <div className="mt-6 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
             {results.map((profile) => (
-              <ResultCardWithBooking key={profile.slug} profile={profile} />
+              <BookingFormWrapper key={profile.slug} profile={profile} asCard />
             ))}
           </div>
         ) : (

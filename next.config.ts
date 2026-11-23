@@ -1,6 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
+  experimental: { authInterrupts: true },
   /* PPR (cacheComponents) is intentionally off for v1: with placeholder data there
      is nothing to stream, and a PPR shell would commit HTTP 200 before notFound()
      can run, so unknown profile slugs could never return a proper 404. Re-enable

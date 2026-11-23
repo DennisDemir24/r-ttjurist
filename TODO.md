@@ -26,6 +26,8 @@ To build a scalable marketplace for lawyers where users can easily find the righ
 - [ ] **[UX/Content] Copywriting:** Create persuasive copy for CTAs that drive conversion (e.g., from search result -> profile).
 
 ## PHASE 3: Monetization & Scale - Advanced Features (Priority Medium/Low)
+
+- [ ] Before production launch, simplify approved-provider onboarding so an administrator can invite a verified practitioner without switching to the Neon console. Preserve invite-only registration and scope provisioning credentials to the minimum required access.
 *Goal: Revenue generation and optimization.*
 
 - [ ] **[Backend] Payment Services:** Integrate payment handling for "Boosted Listing" status.

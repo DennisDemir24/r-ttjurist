@@ -1,0 +1,156 @@
+generator client {
+  provider = "prisma-client"
+  output = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  schemas = ["directory"]
+}
+
+model Firm {
+  id Int @id @default(autoincrement())
+  name String @unique
+  profiles ProviderProfile[]
+  @@schema("directory")
+}
+
+enum ReviewStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  @@schema("directory")
+}
+
+model OnboardingCandidate {
+  id String @id @default(uuid()) @db.Uuid
+  name String
+  email String @unique
+  firmName String
+  claimedTitle String
+  reviewStatus ReviewStatus @default(PENDING)
+  reviewNote String?
+  reviewedBy String?
+  reviewedAt DateTime?
+  draftBio String @default("")
+  draftSpecialties String[] @default([])
+  draftServices String[] @default([])
+  draftVersion Int @default(0)
+  submission ProfileSubmission?
+  publishedSlug String? @unique
+  publishedProfile ProviderProfile? @relation(fields: [publishedSlug], references: [slug], onDelete: Restrict)
+  publishedVersion Int?
+  createdAt DateTime @default(now())
+  invitations ProviderInvitation[]
+  @@schema("directory")
+}
+
+model ProviderInvitation {
+  id String @id @default(uuid()) @db.Uuid
+  candidateId String @db.Uuid
+  candidate OnboardingCandidate @relation(fields: [candidateId], references: [id])
+  recipientEmail String
+  sentAt DateTime @default(now())
+  expiresAt DateTime
+  acceptedAt DateTime?
+  authUserId String?
+  revokedAt DateTime?
+  @@index([candidateId, sentAt])
+  @@schema("directory")
+}
+
+model ProfileSubmission {
+  candidateId String @id @db.Uuid
+  candidate OnboardingCandidate @relation(fields: [candidateId], references: [id])
+  version Int
+  name String
+  firmName String
+  claimedTitle String
+  bio String
+  specialties String[]
+  services String[]
+  submittedAt DateTime @default(now())
+  @@schema("directory")
+}
+
+model ProviderProfile {
+  slug String @id
+  slots ConsultationSlot[]
+  owner OnboardingCandidate?
+  name String
+  title String
+  bio String
+  location String?
+  email String?
+  phone String?
+  published Boolean @default(false)
+  isPremium Boolean @default(false)
+  isAvailable Boolean @default(true)
+  rating Float @default(0)
+  reviewCount Int @default(0)
+  firmId Int
+  firm Firm @relation(fields: [firmId], references: [id])
+  services Service[]
+  specialties ProfileSpecialty[]
+  @@schema("directory")
+}
+
+model ConsultationSlot {
+  id String @id @default(uuid()) @db.Uuid
+  profileSlug String
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Restrict)
+  startsAt DateTime @db.Timestamptz(3)
+  endsAt DateTime @db.Timestamptz(3)
+  timeZone String @default("Europe/Stockholm")
+  bookingKey String? @unique @db.Uuid
+  bookedAt DateTime?
+  visitorName String?
+  visitorEmail String?
+  visitorPhone String?
+  message String?
+  emails BookingEmail[]
+  @@unique([profileSlug, startsAt])
+  @@schema("directory")
+}
+
+model BookingEmail {
+  id String @id @default(uuid()) @db.Uuid
+  slotId String @db.Uuid
+  slot ConsultationSlot @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  recipient String
+  subject String
+  body String
+  nextAttempt DateTime @default(now())
+  sentAt DateTime?
+  @@index([sentAt, nextAttempt])
+  @@schema("directory")
+}
+
+model Specialty {
+  slug String @id
+  name String
+  profiles ProfileSpecialty[]
+  @@schema("directory")
+}
+
+model ProfileSpecialty {
+  profileSlug String
+  specialtySlug String
+  position Int
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Cascade)
+  specialty Specialty @relation(fields: [specialtySlug], references: [slug])
+  @@id([profileSlug, specialtySlug])
+  @@index([specialtySlug])
+  @@schema("directory")
+}
+
+model Service {
+  id String @id
+  name String
+  description String
+  position Int
+  profileSlug String
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Cascade)
+  @@index([profileSlug])
+  @@schema("directory")
+}

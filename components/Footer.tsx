@@ -8,6 +8,9 @@ const footerLinks = {
     { label: "Familjerätt", href: "#omraden" },
   ],
   "Om oss": [
+    { label: "Ansök om en juristprofil", href: "/ansok" },
+    { label: "Aktivera ditt konto", href: "/aktivera" },
+    { label: "Logga in", href: "/logga-in" },
     { label: "Så fungerar det", href: "#sa-fungerar-det" },
     { label: "Omdöden", href: "#omdomden" },
     { label: "Kontakt", href: "#" },

@@ -20,6 +20,12 @@ You can start editing the page by modifying `app/page.tsx`. The page auto-update
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
+## Consultation bookings
+
+Apply the committed Prisma migrations with `npx prisma migrate deploy` using the target environment's direct database URL. A provider with a published profile can open **Mina bokningar** from **Min profil** and offer 30-minute slots in Swedish local time.
+
+For confirmation email, set `RESEND_API_KEY` and `BOOKING_EMAIL_FROM` to a Resend key and verified sender. The initial send runs after the booking commits. Configure a scheduler to call `GET /api/booking-emails` every five minutes with `Authorization: Bearer <CRON_SECRET>`. It retries pending visitor and provider messages independently. Provider notifications go to the approved provider's onboarding email. Before inviting testers, book a slot with two controlled addresses and check both inboxes and the private appointment list.
+
 ## Learn More
 
 To learn more about Next.js, take a look at the following resources:
