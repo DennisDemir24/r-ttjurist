@@ -75,6 +75,7 @@ model ProfileSubmission {
 
 model ProviderProfile {
   slug String @id
+  slots ConsultationSlot[]
   owner OnboardingCandidate?
   name String
   title String
@@ -91,6 +92,37 @@ model ProviderProfile {
   firm Firm @relation(fields: [firmId], references: [id])
   services Service[]
   specialties ProfileSpecialty[]
+  @@schema("directory")
+}
+
+model ConsultationSlot {
+  id String @id @default(uuid()) @db.Uuid
+  profileSlug String
+  profile ProviderProfile @relation(fields: [profileSlug], references: [slug], onDelete: Restrict)
+  startsAt DateTime @db.Timestamptz(3)
+  endsAt DateTime @db.Timestamptz(3)
+  timeZone String @default("Europe/Stockholm")
+  bookingKey String? @unique @db.Uuid
+  bookedAt DateTime?
+  visitorName String?
+  visitorEmail String?
+  visitorPhone String?
+  message String?
+  emails BookingEmail[]
+  @@unique([profileSlug, startsAt])
+  @@schema("directory")
+}
+
+model BookingEmail {
+  id String @id @default(uuid()) @db.Uuid
+  slotId String @db.Uuid
+  slot ConsultationSlot @relation(fields: [slotId], references: [id], onDelete: Restrict)
+  recipient String
+  subject String
+  body String
+  nextAttempt DateTime @default(now())
+  sentAt DateTime?
+  @@index([sentAt, nextAttempt])
   @@schema("directory")
 }
 

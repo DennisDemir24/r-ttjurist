@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { bookingButton } from "../form-styles";
 import type { LawyerProfile } from "@/lib/types";
 
 /** Initials for the avatar, e.g. "Anna Svensson" → "AS". */
@@ -106,7 +107,7 @@ export default function ResultCard({ profile, onBook }: ResultCardProps) {
         <button
           type="button"
           onClick={onBook}
-          className="mt-4 w-full rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+          className={`${bookingButton} mt-4 w-full`}
         >
           Boka konsultation
         </button>
