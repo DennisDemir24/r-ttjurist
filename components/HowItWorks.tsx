@@ -1,21 +1,21 @@
 const steps = [
   {
     number: "1",
-    title: "Beskriv din fråga",
+    title: "Hitta jurister",
     description:
-      "Berätta vad du behöver hjälp med – vi matchar dig med rätt jurist inom rätt område.",
+      "Sök på ett ord som ”skilsmässa” eller välj ett rättsområde för att se jurister som arbetar med det.",
   },
   {
     number: "2",
-    title: "Jämför och välj",
+    title: "Jämför profiler",
     description:
-      "Se profiler, omdöden och priser. Välj den jurist som passar dig bäst baserat på verkliga erfarenheter.",
+      "Läs juristens presentation och se vilka tjänster som erbjuds. Du väljer själv vem du vill boka.",
   },
   {
     number: "3",
-    title: "Boka konsultation",
+    title: "Boka en ledig tid",
     description:
-      "Boka en tid online eller på plats. Få svar på din fråga snabbt och tryggt.",
+      "Öppna ”Boka konsultation” för att se juristens lediga tider. Välj en tid, fyll i dina kontaktuppgifter och bekräfta bokningen.",
   },
 ];
 

@@ -59,9 +59,9 @@ const categoryIcons: Record<string, ReactNode> = {
 
 export default function Categories() {
   return (
-    <section className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
+    <section id="omraden" className="mx-auto max-w-7xl scroll-mt-20 px-4 py-16 sm:px-6 lg:px-8">
       <div className="text-center">
-        <span className="eyebrow">Juridiska områden</span>
+        <span className="text-sm font-semibold uppercase tracking-wider text-blue-600">Juridiska områden</span>
         <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900 sm:text-4xl">
           Vilken typ av ärende behöver du hjälp med?
         </h2>
